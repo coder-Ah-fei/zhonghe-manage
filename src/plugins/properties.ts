@@ -7,7 +7,7 @@ const server_contextPath = "/operate"
 // /view 服务器地址
 
 
-function spliceUrl(url) {
+function spliceUrl(url: string) {
     return "http://" + server_ip + ":" + server_port + server_contextPath + url;
 }
 
