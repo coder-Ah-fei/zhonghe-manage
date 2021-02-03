@@ -12,13 +12,13 @@ const config = {
 	// baseURL: process.env.baseURL || process.env.apiUrl || "",
 	timeout: 60 * 1000, // Timeout
 	withCredentials: true, // Check cross-site Access-Control
-	headers: {'X-Requested-With': 'XMLHttpRequest'},
-	// headers: {
-	// 	'content-type': 'application/x-www-form-urlencoded'
-	// },
-	transformRequest: [data => {
-		return querystring.stringify(data);
-	}]
+	// headers: {'X-Requested-With': 'XMLHttpRequest'},
+	headers: {
+		'content-type': 'application/x-www-form-urlencoded'
+	},
+	// transformRequest: [data => {
+	// 	return querystring.stringify(data);
+	// }]
 };
 
 const _axios = axios.create(config);

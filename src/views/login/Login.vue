@@ -1,6 +1,6 @@
 <!--空白布局-->
 <template>
-  <v-app>
+  <v-app class="aaa">
     <v-main>
       <v-container>
         <v-row>
@@ -17,7 +17,6 @@
                                 v-model="loginForm.passWord"></v-text-field>
                 </v-form>
                 <v-btn color="primary" height="50" width="100%" @click="toLoginFun">登录</v-btn>
-                <v-btn color="primary" height="50" width="100%" @click="testBtnFun">testBtn1</v-btn>
               </v-card-text>
             </v-card>
           </v-col>
@@ -55,19 +54,12 @@ export default {
       if (that.valid) {
         that.axios.post(that.$appProp.url.checkLogin, that.$qs.stringify(that.loginForm))
             .then(res => {
-              cookie.set('servantNO', res.data.result.servantNO, {expires: 7, path: '/'});
+              // cookie.set('servantNO', res.data.result.servantNO, {expires: 7, path: '/'});
+              that.$router.push({path: '/'})
             })
             .catch(() => {
             })
       }
-    },
-    testBtnFun() {
-      let that = this;
-      that.axios.post(that.$appProp.url.goSystemAjaxMenu)
-          .then(() => {
-          })
-          .catch(() => {
-          })
     },
   }
 };

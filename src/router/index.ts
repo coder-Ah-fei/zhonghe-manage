@@ -11,12 +11,12 @@ const routes: Array<RouteConfig> = [
         component: () => import( '../views/layout/Layout.vue' ),
         children: [
             {
-                path: '/home',
+                path: '/private/wechat/manage/wechatGroup/list',
                 name: 'Home',
                 component: () => import('../views/Home.vue'),
             },
             {
-                path: '/about',
+                path: '/private/customer/manage/customerUser/bindGasCard/goUserPersonalList',
                 name: 'About',
                 component: () => import('../views/About.vue')
             }
@@ -31,7 +31,8 @@ const routes: Array<RouteConfig> = [
 
 const router = new VueRouter({
     mode: 'history',
-    base: process.env.BASE_URL,
+    // base: process.env.BASE_URL,
+    base: 'zhonghe-manage',
     routes
 })
 

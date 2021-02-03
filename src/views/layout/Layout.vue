@@ -27,7 +27,7 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title">
-            Application
+            众合金管家
           </v-list-item-title>
           <v-list-item-subtitle>
             subtext
@@ -36,27 +36,80 @@
       </v-list-item>
 
       <v-divider></v-divider>
-
       <v-list
           dense
           nav
       >
-        <v-list-item
-            v-for="item in items"
-            :key="item.title"
-            link
-        >
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
+        <template v-for="funI in functionList">
+          <template v-if="!funI.children || funI.children.length == 0">
+            <v-list-item
+                color="red"
+                :to="`/${funI.url}`"
+            >
+              <v-list-item-icon>
+                <v-icon>mdi mdi-alpha-x-box</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>{{ funI.name }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+          <v-list-group v-else color="red" >
+            <template v-slot:prependIcon>
+              <v-icon>mdi mdi-alpha-x-box</v-icon>
+            </template>
+            <template v-slot:activator>
+              <v-list-item-title>{{ funI.name }}</v-list-item-title>
+            </template>
 
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+            <template v-for="funII in funI.children">
+              <template v-if="!funII.children || funII.children.length == 0">
+                <v-list-item
+                    color="red"
+                    :to="`/${funII.url}`"
+                >
+                  <v-list-item-icon>
+                    <!--                  <v-icon small>{{ funII.icon }}</v-icon>-->
+                    <v-icon small></v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ funII.name }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </template>
+
+              <v-list-group
+                  v-else
+                  no-action
+                  sub-group
+                  color="red"
+              >
+                <template v-slot:activator>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ funII.name }}</v-list-item-title>
+                  </v-list-item-content>
+                </template>
+
+                <v-list-item
+                    v-for="funIII in funII.children"
+                    :to="`/${funIII.url}`"
+                    color="red"
+                >
+                  <v-list-item-icon>
+                    <v-icon small>mdi mdi-alpha-x-box</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ funIII.name }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-group>
+            </template>
+          </v-list-group>
+        </template>
       </v-list>
+
     </v-navigation-drawer>
-    <v-main class="grey lighten-3">
+    <v-main class="">
       <v-container>
         <transition :name="transitionName">
           <router-view class="view"></router-view>
@@ -73,6 +126,7 @@ export default {
     return {
       transitionName: '',
       navigationDrawShow: true,
+      functionList: [],
       items: [
         {title: 'Dashboard', icon: 'mdi-view-dashboard'},
         {title: 'Photos', icon: 'mdi-image'},
@@ -97,6 +151,21 @@ export default {
         this.transitionName = 'slide-right';
       }
     }
+  },
+  created(){
+    this.listFunctionsForManagerFun();
+  },
+  methods:{
+    listFunctionsForManagerFun(){
+      let that = this;
+      that.axios.post(that.$appProp.url.goFunctionList, that.$qs.stringify(that.loginForm))
+          .then(res => {
+              that.functionList = res.data[0].children;
+            // cookie.set('servantNO', res.data.result.servantNO, {expires: 7, path: '/'});
+          })
+          .catch(() => {
+          })
+    },
   },
 };
 </script>
